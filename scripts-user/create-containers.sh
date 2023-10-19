@@ -3,7 +3,8 @@
 
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
   echo "Usage: $0"
-  echo \nCreate docker containers used by project
+  echo
+  echo Create docker containers used by project
   exit 0
 fi
 

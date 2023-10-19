@@ -4,7 +4,8 @@
 
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
   echo "Usage: $0"
-  echo \nDeploys docker compose project using configuration in .deploy folder
+  echo
+  echo Deploys docker compose project using configuration in .deploy folder
   exit 0
 fi
 

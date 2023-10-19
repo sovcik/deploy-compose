@@ -13,7 +13,7 @@ if [ "$SUDO_USER" != "" ]; then
   this_user=$SUDO_USER
 fi
 
-dc_file=docker-compose.yml
+dc_file=docker-compose.yaml
 root_path=/usr/local/lib/deploy-compose
 user_path=$root_path/users/$this_user
 

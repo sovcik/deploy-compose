@@ -14,7 +14,7 @@ if [ "$SUDO_USER" != "" ]; then
   this_user=$SUDO_USER
 fi
 
-root_path=/opt/deploy
+root_path=/usr/local/lib/deploy-compose
 user_home_folder=/home/$this_user
 user_path=$root_path/users/$this_user
 

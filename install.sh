@@ -21,14 +21,14 @@ fi
 sudo cp -r scripts-admin/. $install_root
 sudo cp -r scripts-user $install_root
 
-echo "sudo $user_scripts/deploy.sh" > $user_scripts/deploy
-echo "sudo $user_scripts/list-containers.sh" > $user_scripts/list-containers
-echo "sudo $user_scripts/log-show.sh" > $user_scripts/log-show
-echo "sudo $user_scripts/log-tail.sh" > $user_scripts/log-tail
-echo "sudo $user_scripts/run-bash.sh" > $user_scripts/run-bash
-echo "sudo $user_scripts/stop-containers" > $user_scripts/stop-containers
-echo "sudo $user_scripts/start-containers" > $user_scripts/start-containers
-echo "sudo $user_scripts/create-containers" > $user_scripts/create-containers
+echo "sudo $user_scripts/deploy.sh" | sudo tee $user_scripts/deploy > /dev/null
+echo "sudo $user_scripts/list-containers.sh" | sudo tee $user_scripts/list-containers > /dev/null
+echo "sudo $user_scripts/log-show.sh" | sudo tee $user_scripts/log-show > /dev/null
+echo "sudo $user_scripts/log-tail.sh" | sudo tee $user_scripts/log-tail > /dev/null
+echo "sudo $user_scripts/run-bash.sh" | sudo tee $user_scripts/run-bash > /dev/null
+echo "sudo $user_scripts/stop-containers" | sudo tee $user_scripts/stop-containers > /dev/null
+echo "sudo $user_scripts/start-containers" | sudo tee $user_scripts/start-containers > /dev/null
+echo "sudo $user_scripts/create-containers" | sudo tee $user_scripts/create-containers > /dev/null
 
 sudo chmod -R +x $install_root
 
@@ -37,7 +37,7 @@ sudo groupadd deploy_user
 
 echo "> adding deploy_user group to sudoers"
 sudo_file=/etc/sudoers.d/deploy-compose
-sudo echo "%deploy_user ALL=(ALL) NOPASSWD: !ALL" > $sudo_file
-sudo echo "%deploy_user ALL=(ALL) NOPASSWD: $user_scripts/*" >> $sudo_file
+echo "%deploy_user ALL=(ALL) NOPASSWD: !ALL" | sudo tee $sudo_file > /dev/null
+echo "%deploy_user ALL=(ALL) NOPASSWD: $user_scripts/*" | sudo tee -a $sudo_file > /dev/null
 
 echo Done.

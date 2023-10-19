@@ -3,7 +3,7 @@
 
 install_root=/usr/local/lib/deploy-compose
 bin_root=/usr/local/bin
-user_scripts=$install_root/scripts-user
+user_scripts=$install_root
 
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
   echo "Usage: $0"
@@ -21,9 +21,9 @@ if [ ! -d "$install_root/users" ]; then
 fi
 
 sudo cp -r scripts-admin/. $install_root
-sudo cp -r scripts-user $install_root
+sudo cp -r scripts-user/. $install_root
 
-sudo chmod -R +x $install_root
+sudo chmod +x $install_root/*
 
 echo "sudo $user_scripts/deploy-compose.sh \"\$@\"" | sudo tee $bin_root/deploy-compose > /dev/null
 sudo chmod +x $bin_root/deploy-compose

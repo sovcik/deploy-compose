@@ -21,12 +21,12 @@ dc_file=docker-compose.yaml
 
 user_new_deploy_folder=$user_home_folder/.deploy
 
-if [ ! -f $user_new_deploy_folder/$dc_file ]; then
-  echo "Error: no $dc_file found in folder=$(user_new_deploy_folder)."
+if [ ! -f "$user_new_deploy_folder/$dc_file" ]; then
+  echo "Error: no $dc_file found in folder=$user_new_deploy_folder."
   exit 1
 fi
 
-if [ ! -x $user_path/archive ]; then
+if [ ! -x "$user_path/archive" ]; then
   echo "Error: archive folder for user $this_user does not exist"
   exit 1
 fi
@@ -36,7 +36,7 @@ echo "Deploying using configuration in .deploy folder"
 dt=$(date '+%Y%m%d_%H%M%S')
 project_name=$USER
 
-if [ -f $user_path/current/$dc_file ]; then
+if [ -f "$user_path/current/$dc_file" ]; then
   echo "> stopping services using current compose file"
   docker compose -f $user_path/current/$dc_file down
 

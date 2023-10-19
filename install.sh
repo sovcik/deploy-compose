@@ -1,7 +1,8 @@
 #!/bin/sh
 #set -x
 
-install_root=/usr/local/deploy-compose
+install_root=/usr/local/lib/deploy-compose
+bin_root=/usr/local/bin
 user_scripts=$install_root/scripts-user
 
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
@@ -21,14 +22,14 @@ fi
 sudo cp -r scripts-admin/. $install_root
 sudo cp -r scripts-user $install_root
 
-echo "sudo $user_scripts/deploy.sh" | sudo tee $user_scripts/deploy > /dev/null
-echo "sudo $user_scripts/list-containers.sh" | sudo tee $user_scripts/list-containers > /dev/null
-echo "sudo $user_scripts/log-show.sh" | sudo tee $user_scripts/log-show > /dev/null
-echo "sudo $user_scripts/log-tail.sh" | sudo tee $user_scripts/log-tail > /dev/null
-echo "sudo $user_scripts/run-shell.sh" | sudo tee $user_scripts/run-shell > /dev/null
-echo "sudo $user_scripts/stop-containers" | sudo tee $user_scripts/stop-containers > /dev/null
-echo "sudo $user_scripts/start-containers" | sudo tee $user_scripts/start-containers > /dev/null
-echo "sudo $user_scripts/create-containers" | sudo tee $user_scripts/create-containers > /dev/null
+echo "sudo $user_scripts/deploy.sh" | sudo tee $bin_root/deploy > /dev/null
+echo "sudo $user_scripts/list-containers.sh" | sudo tee $bin_root/list-containers > /dev/null
+echo "sudo $user_scripts/log-show.sh" | sudo tee $bin_root/log-show > /dev/null
+echo "sudo $user_scripts/log-tail.sh" | sudo tee $bin_root/log-tail > /dev/null
+echo "sudo $user_scripts/run-shell.sh" | sudo tee $bin_root/run-shell > /dev/null
+echo "sudo $user_scripts/stop-containers" | sudo tee $bin_root/stop-containers > /dev/null
+echo "sudo $user_scripts/start-containers" | sudo tee $bin_root/start-containers > /dev/null
+echo "sudo $user_scripts/create-containers" | sudo tee $bin_root/create-containers > /dev/null
 
 sudo chmod -R +x $install_root
 

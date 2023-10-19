@@ -15,8 +15,8 @@ echo Installing deploy-compose
 
 echo "> copying scripts to $install_root"
 
-if [ ! -d "$install_root" ]; then
-  sudo mkdir -p $install_root
+if [ ! -d "$install_root/users" ]; then
+  sudo mkdir -p $install_root/users
 fi
 
 sudo cp -r scripts-admin/. $install_root

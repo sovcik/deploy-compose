@@ -5,7 +5,7 @@ if [ "$1" = "" ]; then
   exit 1
 fi
 
-if [ "$1" = "--help" || "$1" = "-h" ]; then
+if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
   echo "Usage: $0 <container_name>"
   echo \nShows logs of the container
   echo "  <container_name> - name of the container to show logs for"

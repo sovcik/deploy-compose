@@ -4,7 +4,7 @@
 install_root=/usr/local/deploy-compose
 user_scripts=$install_root/scripts-user
 
-if [ "$1" = "--help" || "$1" = "-h" ]; then
+if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
   echo "Usage: $0"
   echo \nInstalls deploy-compose scripts in $install_root
   exit 0
@@ -25,7 +25,7 @@ echo "sudo $user_scripts/deploy.sh" | sudo tee $user_scripts/deploy > /dev/null
 echo "sudo $user_scripts/list-containers.sh" | sudo tee $user_scripts/list-containers > /dev/null
 echo "sudo $user_scripts/log-show.sh" | sudo tee $user_scripts/log-show > /dev/null
 echo "sudo $user_scripts/log-tail.sh" | sudo tee $user_scripts/log-tail > /dev/null
-echo "sudo $user_scripts/run-bash.sh" | sudo tee $user_scripts/run-bash > /dev/null
+echo "sudo $user_scripts/run-shell.sh" | sudo tee $user_scripts/run-shell > /dev/null
 echo "sudo $user_scripts/stop-containers" | sudo tee $user_scripts/stop-containers > /dev/null
 echo "sudo $user_scripts/start-containers" | sudo tee $user_scripts/start-containers > /dev/null
 echo "sudo $user_scripts/create-containers" | sudo tee $user_scripts/create-containers > /dev/null

@@ -1,7 +1,7 @@
 #!/bin/sh
 #set -x
 
-if [ "$1" = "--help" || "$1" = "-h" ]; then
+if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
   echo "Usage: $0 <username> <ssh_public_key>"
   echo \nCreates a new user for deployment
   echo "  <username> - name of the user to create"

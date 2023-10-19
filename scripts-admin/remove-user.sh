@@ -8,7 +8,7 @@ if [ "$1" = "" ]; then
   exit 1
 fi
 
-if [ "$1" = "--help" || "$1" = "-h" ]; then
+if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
   echo "Usage: $0 <container_name>"
   echo \nRemove deployment user including all their files and containers
   exit 0

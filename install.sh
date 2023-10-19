@@ -22,7 +22,7 @@ fi
 sudo cp -r scripts-admin/. $install_root
 sudo cp -r scripts-user $install_root
 
-echo "sudo $user_scripts/deploy.sh "$@"" | sudo tee $bin_root/deploy > /dev/null
+echo "sudo $user_scripts/deploy.sh '$@'" | sudo tee $bin_root/deploy > /dev/null
 echo "sudo $user_scripts/list-containers.sh "$@"" | sudo tee $bin_root/list-containers > /dev/null
 echo "sudo $user_scripts/log-show.sh "$@"" | sudo tee $bin_root/log-show > /dev/null
 echo "sudo $user_scripts/log-tail.sh "$@"" | sudo tee $bin_root/log-tail > /dev/null

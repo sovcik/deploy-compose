@@ -4,7 +4,7 @@
 
 sript_name=docker-compose
 
-function show_help() {
+show_help() {
   echo "Usage: $script_name <command> [command args]"
   echo
   echo "Commands:"
@@ -54,7 +54,8 @@ project_name="$this_user"
 # full current docker compose file name
 current_config="$user_path/current/$dc_file"
 
-function deploy() {
+####################################################################################################
+deploy() {
 
   if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
     echo "Usage: $script_name $0"
@@ -107,7 +108,8 @@ function deploy() {
   echo Done.
 }
 
-function connect() {
+####################################################################################################
+connect() {
   if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
     echo "Usage: $script_name $0 <container_name>"
     echo
@@ -124,7 +126,8 @@ function connect() {
   sudo docker run -i -t $1 bash
 }
 
-function create() {
+####################################################################################################
+create() {
   if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
     echo "Usage: $script_name $0"
     echo
@@ -135,7 +138,8 @@ function create() {
   sudo docker compose -f "$current_config" --project-name $project_name create
 }
 
-function exec() {
+####################################################################################################
+exec() {
   if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
     echo "Usage: $script_name $0 <container_name> <command> [command args]"
     echo
@@ -159,7 +163,8 @@ function exec() {
   sudo docker run -i -t $@
 }
 
-function list() {
+####################################################################################################
+list() {
   if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
     echo "Usage: $script_name $0"
     echo
@@ -170,7 +175,8 @@ function list() {
   sudo docker compose -f "$current_config" --project-name $project_name ps
 }
 
-function show_log(){
+####################################################################################################
+show_log(){
   if [ "$1" = "" ]; then
     echo "Error: provide container name as the first argument"
     exit 1
@@ -187,7 +193,8 @@ function show_log(){
   less -F `sudo docker inspect --format='{{.LogPath}}' $1`
 }
 
-function tail_log() {
+####################################################################################################
+tail_log() {
   if [ "$1" = "" ]; then
     echo "Error: provide container name as the first argument"
     exit 1
@@ -204,38 +211,43 @@ function tail_log() {
   tail -f `sudo docker inspect --format='{{.LogPath}}' $1`
   }
 
-  function pull() {
-    if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
-      echo "Usage: $script_name $0"
-      echo
-      echo Pull + refresh docker containers used by project
-      exit 0
-    fi
+####################################################################################################
+pull() {
+  if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+    echo "Usage: $script_name $0"
+    echo
+    echo Pull + refresh docker containers used by project
+    exit 0
+  fi
 
-    sudo docker compose -f "$current_config" --project-name $project_name pull    
-  }
+  sudo docker compose -f "$current_config" --project-name $project_name pull    
+}
 
-  function start() {
-    if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
-      echo "Usage: $script_name $0"
-      echo
-      echo Start docker containers used by project
-      exit 0
-    fi
+####################################################################################################
+start() {
+  if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+    echo "Usage: $script_name $0"
+    echo
+    echo Start docker containers used by project
+    exit 0
+  fi
 
-    sudo docker compose -f "$current_config" --project-name $project_name start
-  }
+  sudo docker compose -f "$current_config" --project-name $project_name start
+}
 
-    function stop() {
-    if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
-      echo "Usage: $script_name $0"
-      echo
-      echo Stop docker containers used by project
-      exit 0
-    fi
+####################################################################################################
+stop() {
+  if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+    echo "Usage: $script_name $0"
+    echo
+    echo Stop docker containers used by project
+    exit 0
+  fi
 
-    sudo docker compose -f "$current_config" --project-name $project_name stop
-  }
+  sudo docker compose -f "$current_config" --project-name $project_name stop
+}
+
+####################################################################################################
 
 command=$1
 

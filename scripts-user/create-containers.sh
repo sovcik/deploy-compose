@@ -8,4 +8,9 @@ if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
   exit 0
 fi
 
-sudo docker compose -f $user_path/current/$dc_file --project-name $project_name create
+this_user=$USER
+if [ "$SUDO_USER" != "" ]; then
+  this_user=$SUDO_USER
+fi
+
+sudo docker compose -f $user_path/current/$dc_file --project-name $this_user create

@@ -7,7 +7,8 @@ user_scripts=$install_root/scripts-user
 
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
   echo "Usage: $0"
-  echo \nInstalls deploy-compose scripts in $install_root
+  echo
+  echo Installs deploy-compose scripts in $install_root
   exit 0
 fi
 
@@ -22,17 +23,10 @@ fi
 sudo cp -r scripts-admin/. $install_root
 sudo cp -r scripts-user $install_root
 
-echo "sudo $user_scripts/deploy.sh \"\$@\"" | sudo tee $bin_root/deploy > /dev/null
-echo "sudo $user_scripts/list-containers.sh \"\$@\"" | sudo tee $bin_root/list-containers > /dev/null
-echo "sudo $user_scripts/log-show.sh \"\$@\"" | sudo tee $bin_root/log-show > /dev/null
-echo "sudo $user_scripts/log-tail.sh \"\$@\"" | sudo tee $bin_root/log-tail > /dev/null
-echo "sudo $user_scripts/connect.sh \"\$@\"" | sudo tee $bin_root/connect > /dev/null
-echo "sudo $user_scripts/exec.sh \"\$@\"" | sudo tee $bin_root/exec > /dev/null
-echo "sudo $user_scripts/stop-containers \"\$@\"" | sudo tee $bin_root/stop-containers > /dev/null
-echo "sudo $user_scripts/start-containers \"\$@\"" | sudo tee $bin_root/start-containers > /dev/null
-echo "sudo $user_scripts/create-containers \"\$@\"" | sudo tee $bin_root/create-containers > /dev/null
-
 sudo chmod -R +x $install_root
+
+echo "sudo $user_scripts/deploy-compose.sh \"\$@\"" | sudo tee $bin_root/deploy-compose > /dev/null
+sudo chmod +x $bin_root/deploy-compose
 
 echo "> creating deploy_user group"
 sudo groupadd deploy_user

@@ -13,4 +13,8 @@ if [ "$SUDO_USER" != "" ]; then
   this_user=$SUDO_USER
 fi
 
+dc_file=docker-compose.yml
+root_path=/usr/local/lib/deploy-compose
+user_path=$root_path/$this_user
+
 sudo docker compose -f $user_path/current/$dc_file --project-name $this_user stop

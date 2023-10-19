@@ -26,7 +26,8 @@ echo "sudo $user_scripts/deploy.sh \"\$@\"" | sudo tee $bin_root/deploy > /dev/n
 echo "sudo $user_scripts/list-containers.sh \"\$@\"" | sudo tee $bin_root/list-containers > /dev/null
 echo "sudo $user_scripts/log-show.sh \"\$@\"" | sudo tee $bin_root/log-show > /dev/null
 echo "sudo $user_scripts/log-tail.sh \"\$@\"" | sudo tee $bin_root/log-tail > /dev/null
-echo "sudo $user_scripts/run-shell.sh \"\$@\"" | sudo tee $bin_root/run-shell > /dev/null
+echo "sudo $user_scripts/connect.sh \"\$@\"" | sudo tee $bin_root/connect > /dev/null
+echo "sudo $user_scripts/exec.sh \"\$@\"" | sudo tee $bin_root/exec > /dev/null
 echo "sudo $user_scripts/stop-containers \"\$@\"" | sudo tee $bin_root/stop-containers > /dev/null
 echo "sudo $user_scripts/start-containers \"\$@\"" | sudo tee $bin_root/start-containers > /dev/null
 echo "sudo $user_scripts/create-containers \"\$@\"" | sudo tee $bin_root/create-containers > /dev/null

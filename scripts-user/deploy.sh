@@ -39,24 +39,24 @@ project_name=$USER
 
 if [ -f "$user_path/current/$dc_file" ]; then
   echo "> stopping services using current compose file"
-  docker compose -f $user_path/current/$dc_file down
+  sudo docker compose -f $user_path/current/$dc_file down
 
   echo "> archiving the current deploy files"
-  tar czf $user_path/archive/deploy_${this_user}_${dt}.tar.gz -C $user_path/current/ .
-  rm $user_path/current/*
+  sudo tar czf $user_path/archive/deploy_${this_user}_${dt}.tar.gz -C $user_path/current/ .
+  sudo rm $user_path/current/*
 fi
 
 echo "> making new compose files current"
-cp -r $user_new_deploy_folder/. $user_path/current
+sudo cp -r $user_new_deploy_folder/. $user_path/current
 
 
 echo "> giving read access to new and archived files to $this_user"
-chown -R root:$this_user $user_path/current
-chown -R root:$this_user $user_path/archive
-chmod -R o= $user_path
+sudo chown -R root:$this_user $user_path/current
+sudo chown -R root:$this_user $user_path/archive
+sudo chmod -R o= $user_path
 
 echo "> starting services using new compose files"
-docker compose -f $user_path/current/$dc_file --project-name $project_name up -d
+sudo docker compose -f $user_path/current/$dc_file --project-name $project_name up -d
 
 echo ""
 echo You can access current and archved deploy files at $user_path

@@ -14,4 +14,4 @@ if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
 fi
 
 CONTAINER=$1
-less -F `docker inspect --format='{{.LogPath}}' $CONTAINER`
+less -F `sudo docker inspect --format='{{.LogPath}}' $CONTAINER`

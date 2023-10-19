@@ -8,4 +8,4 @@ if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
   exit 0
 fi
 
-sudo docker compose create 
+sudo docker compose -f $user_path/current/$dc_file --project-name $project_name create

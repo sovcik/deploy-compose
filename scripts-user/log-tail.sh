@@ -13,4 +13,4 @@ if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
   exit 0
 fi
 
-tail -f `docker inspect --format='{{.LogPath}}' $1`
+tail -f `sudo docker inspect --format='{{.LogPath}}' $1`

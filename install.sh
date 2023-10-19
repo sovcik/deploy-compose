@@ -23,7 +23,7 @@ fi
 sudo cp -r scripts-admin/. $install_root
 sudo cp -r scripts-user/. $install_root
 
-sudo chmod +x $install_root/*
+sudo chmod +x $install_root/*.sh
 
 echo "sudo $user_scripts/deploy-compose.sh \"\$@\"" | sudo tee $bin_root/deploy-compose > /dev/null
 sudo chmod +x $bin_root/deploy-compose

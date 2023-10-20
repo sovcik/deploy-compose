@@ -19,7 +19,7 @@ if [ ! -d "$install_root/users" ]; then
   sudo mkdir -p $install_root/users
 fi
 
-sudo cp -r bin $bin_root
+sudo cp -r bin/. $bin_root/
 sudo chmod -R +x $bin_root/*.sh
 
 echo "> creating deploy_user group"

@@ -101,6 +101,10 @@ deploy() {
 
   echo "> starting services using new compose files"
   sudo docker compose -f "$current_config" --project-name $project_name up -d
+  if [ $? -ne 0 ]; then
+    echo "Error: failed to start services"
+    exit 1
+  fi
 
   echo ""
   echo You can access current and archved deploy files at $user_path

@@ -3,7 +3,6 @@
 
 install_root=/usr/local/lib/deploy-compose
 bin_root=/usr/local/bin
-user_scripts=$install_root
 
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
   echo "Usage: $0"
@@ -20,13 +19,8 @@ if [ ! -d "$install_root/users" ]; then
   sudo mkdir -p $install_root/users
 fi
 
-sudo cp -r scripts-admin/. $install_root
-sudo cp -r scripts-user/. $install_root
-
-sudo chmod +x $install_root/*.sh
-
-echo "sudo $user_scripts/deploy-compose.sh \"\$@\"" | sudo tee $bin_root/deploy-compose > /dev/null
-sudo chmod +x $bin_root/deploy-compose
+sudo cp -r bin $bin_root
+sudo chmod -R +x $bin_root/*.sh
 
 echo "> creating deploy_user group"
 sudo groupadd deploy_user
@@ -34,6 +28,6 @@ sudo groupadd deploy_user
 echo "> adding deploy_user group to sudoers"
 sudo_file=/etc/sudoers.d/deploy-compose
 echo "%deploy_user ALL=(ALL) NOPASSWD: !ALL" | sudo tee $sudo_file > /dev/null
-echo "%deploy_user ALL=(ALL) NOPASSWD: $user_scripts/*" | sudo tee -a $sudo_file > /dev/null
+echo "%deploy_user ALL=(ALL) NOPASSWD: $bin_root/deploy-compose.sh" | sudo tee -a $sudo_file > /dev/null
 
 echo Done.

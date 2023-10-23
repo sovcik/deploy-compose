@@ -23,7 +23,6 @@ fi
 this_user=$1
 public_key=$2
 root_folder=/usr/local/deploy-compose
-user_scripts=$root_folder/scripts-user
 user_home=/home/$this_user
 
 echo "Creating deploy user: $this_user"
@@ -43,7 +42,6 @@ mkdir $user_home/.ssh
 # create folder for deployment files
 mkdir $user_home/.deploy
 
-
 echo "> adding provided ssh public key to authorized keys"
 # so user can connect using ssh using his private key
 echo $public_key > $user_home/.ssh/authorized_keys
@@ -55,10 +53,6 @@ chmod 600 $user_home/.ssh/authorized_keys
 
 chown -R $this_user:$this_user $user_home/.deploy
 chmod o= $user_home/.deploy
-
-echo "> adding path to deploy scripts to user's PATH"
-# add path to deploy scripts to user's PATH
-echo "export PATH=$PATH:$user_scripts" >> $user_home/.bashrc
 
 echo "> creating deploy folders"
 mkdir -p $root_folder/users/$this_user/archive

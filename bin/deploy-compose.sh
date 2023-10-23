@@ -72,8 +72,8 @@ deploy() {
     exit 1
   fi
 
-  if [ ! -x "$user_path/archive" ]; then
-    echo "Error: archive folder for user $this_user does not exist"
+  if [ ! -d "$user_path/archive" ]; then
+    echo "Error: folder $user_path/archive does not exist"
     exit 1
   fi
 

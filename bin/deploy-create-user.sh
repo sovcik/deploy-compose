@@ -23,6 +23,7 @@ fi
 this_user=$1
 public_key=$2
 user_home=/home/$this_user
+root_folder=/usr/local/lib/deploy-compose
 
 echo "Creating deploy user: $this_user"
 

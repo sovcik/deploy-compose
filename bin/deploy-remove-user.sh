@@ -25,7 +25,7 @@ case $yn in
 		exit 1;;
 esac
 
-root_path=/opt/deploy
+root_path=/usr/local/lib/deploy-compose
 user_deploy_folder=$root_path/users/$this_user
 compose_file=$user_deploy_folder/current/docker-compose.yaml
 

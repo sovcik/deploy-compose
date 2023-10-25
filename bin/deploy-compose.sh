@@ -99,6 +99,9 @@ deploy() {
   sudo chown -R root:$this_user $user_path/archive
   sudo chmod -R o= $user_path
 
+  echo "> pulling new images"
+  sudo docker compose -f "$current_config" --project-name $project_name pull
+
   echo "> starting services using new compose files"
   sudo docker compose -f "$current_config" --project-name $project_name up -d
   if [ $? -ne 0 ]; then

@@ -46,13 +46,13 @@ user_home_folder=/home/$this_user
 dc_file=docker-compose.yaml
 
 # path to user folder with current configuration
-user_current_config_folder=$user_path/current
+current_config_folder=$user_path/current
+
+# full current docker compose file name
+current_config="$user_current_config_folder/$dc_file"
 
 # docker compose project name
 project_name="$this_user"
-
-# full current docker compose file name
-current_config="$user_path/current/$dc_file"
 
 ####################################################################################################
 deploy() {
@@ -99,15 +99,20 @@ deploy() {
   sudo chown -R root:$this_user $user_path/archive
   sudo chmod -R o= $user_path
 
+
   echo "> pulling new images"
   sudo docker compose -f "$current_config" --project-name $project_name pull
 
   echo "> starting services using new compose files"
-  sudo docker compose -f "$current_config" --project-name $project_name up -d
+  # navigate to current config folder, so docker compose can find .env file
+  pushd $current_config_folder
+  sudo docker compose -f "$dc_file" --project-name $project_name up -d
   if [ $? -ne 0 ]; then
     echo "Error: failed to start services"
+    popd
     exit 1
   fi
+  popd
 
   echo ""
   echo You can access current and archved deploy files at $user_path
@@ -142,7 +147,9 @@ create() {
     exit 0
   fi
 
-  sudo docker compose -f "$current_config" --project-name $project_name create
+  pushd $current_config_folder
+  sudo docker compose -f "$dc_file" --project-name $project_name create
+  popd
 }
 
 ####################################################################################################

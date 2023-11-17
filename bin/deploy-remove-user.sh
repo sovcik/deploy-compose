@@ -1,8 +1,6 @@
 #!/bin/bash
 #set -x
 
-#!/bin/sh
-
 if [ "$1" = "" ]; then
   echo "Error: provide username as the first argument"
   exit 1

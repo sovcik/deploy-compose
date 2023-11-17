@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #set -x
 
@@ -49,7 +49,7 @@ dc_file=docker-compose.yaml
 current_config_folder=$user_path/current
 
 # full current docker compose file name
-current_config="$user_current_config_folder/$dc_file"
+current_config="$current_config_folder/$dc_file"
 
 # docker compose project name
 project_name="$this_user"

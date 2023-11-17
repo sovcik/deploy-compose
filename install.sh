@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #set -x
 
 install_root=/usr/local/lib/deploy-compose

@@ -23,8 +23,15 @@ case $yn in
 		exit 1;;
 esac
 
-root_path=/usr/local/lib/deploy-compose
-user_deploy_folder=$root_path/users/$this_user
+data_dir=/usr/local/lib/deploy-compose
+
+config_file=/etc/deploy-compose.cfg
+
+if [ -e "$config_file" ]; then
+  . $config_file
+fi
+
+user_deploy_folder=$data_dir/users/$this_user
 compose_file=$user_deploy_folder/current/docker-compose.yaml
 
 echo Removing deploy user $this_user

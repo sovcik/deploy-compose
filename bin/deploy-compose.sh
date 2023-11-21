@@ -34,10 +34,16 @@ if [ "$SUDO_USER" != "" ]; then
 fi
 
 # path where deploy-compose is installed and where user folders are created
-install_folder=/usr/local/lib/deploy-compose
+data_dir=/usr/local/lib/deploy-compose
+
+config_file=/etc/deploy-compose.cfg
+
+if [ -e "$config_file" ]; then
+  . $config_file
+fi
 
 # path to user folder
-user_path=$install_folder/users/$this_user
+user_path=$data_dir/users/$this_user
 
 # path to user home folder
 user_home_folder=/home/$this_user

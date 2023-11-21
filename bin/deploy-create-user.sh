@@ -23,7 +23,17 @@ fi
 this_user=$1
 public_key=$2
 user_home=/home/$this_user
-root_folder=/usr/local/lib/deploy-compose
+
+# path where deploy-compose is installed and where user folders are created
+data_dir=/usr/local/lib/deploy-compose
+
+config_file=/etc/deploy-compose.cfg
+
+if [ -e "$config_file" ]; then
+  . $config_file
+fi
+
+
 
 echo "Creating deploy user: $this_user"
 
@@ -55,11 +65,11 @@ chown -R $this_user:$this_user $user_home/.deploy
 chmod o= $user_home/.deploy
 
 echo "> creating deploy folders"
-mkdir -p $root_folder/users/$this_user/archive
-mkdir -p $root_folder/users/$this_user/current
+mkdir -p $data_dir/users/$this_user/archive
+mkdir -p $data_dir/users/$this_user/current
 
-echo "> giving user read-only access to deploy folders at $root_folder/users/$this_user"
-chown -R root:$this_user $root_folder/users/$this_user
-chmod -R o= $root_folder/users/$this_user
+echo "> giving user read-only access to deploy folders at $data_dir/users/$this_user"
+chown -R root:$this_user $data_dir/users/$this_user
+chmod -R o= $data_dir/users/$this_user
 
 echo Done.

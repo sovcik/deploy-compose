@@ -114,27 +114,28 @@ deploy() {
   echo "Deploying using configuration in $user_new_config_folder folder"
 
   dt=$(date '+%Y%m%d_%H%M%S')
-  
+
+  if [ ! -d "$current_config_folder" ]; then
+    sudo mkdir -p $current_config_folder
+  fi
+
   if [ -f "$current_config" ]; then
     echo "> stopping services using current compose file"
     sudo docker compose -f "$current_config" --project-name $project_name down
 
     echo "> archiving the current deploy files"
-    sudo tar czf $user_path/archive/deploy_${this_user}_${dt}.tar.gz -C $user_path/current/ .
+    sudo tar czf $user_path/archive/deploy_${project_name}_${dt}.tar.gz -C $current_config_folder/ .
     sudo rm $current_config_folder/*
   fi
 
   echo "> making new compose files current"
-  if [ ! -d "$current_config_folder" ]; then
-    sudo mkdir -p $current_config_folder
-  fi
   sudo cp -r $user_new_config_folder/. $current_config_folder/
-
 
   echo "> giving read access to new and archived files to $this_user"
   sudo chown -R root:$this_user $user_path/current
   sudo chown -R root:$this_user $user_path/archive
   sudo chmod -R o= $user_path
+  sudo chmod -R g-w $user_path
 
   echo "> pulling new images"
   sudo docker compose -f "$current_config" --project-name $project_name pull
@@ -151,7 +152,7 @@ deploy() {
   popd
 
   echo ""
-  echo You can access current and archved deploy files at $user_path
+  echo You can access current and archived deploy files at $user_path
   echo ""
   echo Done.
 }

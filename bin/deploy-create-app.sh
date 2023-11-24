@@ -1,11 +1,6 @@
 #!/bin/bash
 #set -x
 
-if [ "$EUID" -ne 0 ]; then
-  echo "Please run as root"
-  exit 1
-fi
-
 show_help() {
   echo "Usage: $0 [options] <username>"
   echo
@@ -46,26 +41,9 @@ app_name=$1
 
 user_home=/home/$user_name
 
-# path where deploy-compose is installed and where user folders are created
-data_dir=/usr/local/lib/deploy-compose
-
-config_file=/etc/deploy-compose.cfg
-
-if [ -e "$config_file" ]; then
-  . $config_file
-fi
-
 echo "Creating application for user: $user_name"
 
 echo "> creating application folder in deploy folder"
 mkdir -p $user_home/.deploy/$app_name
-
-mkdir -p $data_dir/users/$user_name/archive/$app_name
-mkdir -p $data_dir/users/$user_name/current/$app_name
-
-echo "> giving read-only user access to deploy folders at $data_dir/users/$user_name"
-chown -R root:$user_name $data_dir/users/$user_name
-chmod -R g-w $data_dir/users/$user_name
-chmod -R o= $data_dir/users/$user_name
 
 echo Done.

@@ -10,7 +10,7 @@ fi
 sript_name=docker-compose
 
 show_help() {
-  echo "Usage: $script_name <command> [command args]"
+  echo "Usage: $script_name [options] <command> [command args]"
   echo
   echo "Options:"
   echo "  --help, -h - show this help"
@@ -172,7 +172,7 @@ connect() {
     exit 1
   fi
 
-  sudo docker run -i -t $1 bash
+  sudo docker exec -i -t $1 /bin/bash
 }
 
 ####################################################################################################
@@ -211,7 +211,7 @@ exec_cmd() {
     exit 1
   fi
 
-  sudo docker run -i -t $@
+  sudo docker exec -i -t $@
 }
 
 ####################################################################################################

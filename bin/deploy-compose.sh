@@ -2,10 +2,19 @@
 
 #set -x
 
+this_user=$USER
+if [ "$SUDO_USER" != "" ]; then
+  this_user=$SUDO_USER
+fi
+
 sript_name=docker-compose
 
 show_help() {
   echo "Usage: $script_name <command> [command args]"
+  echo
+  echo "Options:"
+  echo "  --help, -h - show this help"
+  echo "  --application, -a - application name, defualt: none"
   echo
   echo "Commands:"
   echo "  connect <container_name> - connect to shell in the container"
@@ -19,8 +28,6 @@ show_help() {
   echo "  start - start docker containers used by project"
   echo "  stop - stop docker containers used by project"
   echo
-  echo "  --help, -h - show this help"
-  echo
 }
 
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
@@ -28,10 +35,16 @@ if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
   exit 0
 fi
 
-this_user=$USER
-if [ "$SUDO_USER" != "" ]; then
-  this_user=$SUDO_USER
+if [ "$1" == "--application" ] || [ "$1" == "-a" ]; then
+  if [ "$2" == "" ]; then
+    echo "Error: provide application name as the second argument"
+    exit 1
+  fi
+  app_name=$2
+  shift
+  shift
 fi
+
 
 # path where deploy-compose is installed and where user folders are created
 data_dir=/usr/local/lib/deploy-compose
@@ -53,12 +66,18 @@ dc_file=docker-compose.yaml
 
 # path to user folder with current configuration
 current_config_folder=$user_path/current
+if [ "$app_name" != "" ]; then
+  current_config_folder=$user_path/current/$app_name
+fi
 
 # full current docker compose file name
 current_config="$current_config_folder/$dc_file"
 
 # docker compose project name
 project_name="$this_user"
+if [ "$app_name" != "" ]; then
+  project_name="$this_user-$app_name"
+fi
 
 ####################################################################################################
 deploy() {
@@ -71,7 +90,11 @@ deploy() {
   fi
 
   # path to user folder with new configuration
-  local user_new_config_folder=$user_home_folder/.deploy
+  local user_new_config_root=$user_home_folder/.deploy
+  local user_new_config_folder=$user_new_config_root
+  if [ "$app_name" != "" ]; then
+    user_new_config_folder=$user_new_config_root/$app_name
+  fi
 
   if [ ! -f "$user_new_config_folder/$dc_file" ]; then
     echo "Error: no $dc_file found in folder=$user_new_config_folder."
@@ -83,7 +106,7 @@ deploy() {
     exit 1
   fi
 
-  echo "Deploying using configuration in .deploy folder"
+  echo "Deploying using configuration in $user_new_config_folder folder"
 
   dt=$(date '+%Y%m%d_%H%M%S')
   
@@ -97,14 +120,13 @@ deploy() {
   fi
 
   echo "> making new compose files current"
-  sudo cp -r $user_new_config_folder/. $user_path/current
+  sudo cp -r $user_new_config_root/. $user_path/current
 
 
   echo "> giving read access to new and archived files to $this_user"
   sudo chown -R root:$this_user $user_path/current
   sudo chown -R root:$this_user $user_path/archive
   sudo chmod -R o= $user_path
-
 
   echo "> pulling new images"
   sudo docker compose -f "$current_config" --project-name $project_name pull
@@ -270,28 +292,29 @@ stop() {
 ####################################################################################################
 
 command=$1
+shift
 
 case $command in 
 	connect ) 
-    connect "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9";;
+    connect "$@";;
   create ) 
-    create "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9";;
+    create "$@";;
   deploy ) 
-    deploy "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9";;
+    deploy "$@";;
   exec ) 
-    exec_cmd "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9";;
+    exec_cmd "$@";;
   list ) 
-    list "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9";;
+    list "$@";;
   log-show ) 
-    show_log "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9";;
+    show_log "$@";;
   log-tail ) 
-    tail_log "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9";;
+    tail_log "$@";;
   pull ) 
-    pull "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9";;
+    pull "$@";;
   start ) 
-    start "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9";;
+    start "$@";;
   stop ) 
-    stop "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9";;
+    stop "$@";;
 	* ) echo Error: unknown command $command;
     show_help;
 		exit 1;;

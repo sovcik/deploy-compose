@@ -1,6 +1,11 @@
 #!/bin/bash
 #set -x
 
+if [ "$EUID" -ne 0 ]; then
+  echo "Please run as root"
+  exit 1
+fi
+
 show_help() {
   echo "Usage: $0 [options] <username>"
   echo
@@ -13,7 +18,12 @@ show_help() {
   echo
 }
 
-user_name=$USER
+this_user=$USER
+if [ "$SUDO_USER" != "" ]; then
+  this_user=$SUDO_USER
+fi
+
+user_name=$this_user
 
 while [ "$1" != "" ]; do
   case $1 in

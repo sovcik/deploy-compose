@@ -92,8 +92,13 @@ deploy() {
   # path to user folder with new configuration
   local user_new_config_root=$user_home_folder/.deploy
   local user_new_config_folder=$user_new_config_root
+
   if [ "$app_name" != "" ]; then
     user_new_config_folder=$user_new_config_root/$app_name
+    if [ ! -d "$user_new_config_folder" ]; then
+      echo "Error: no $app_name folder found in $user_new_config_root."
+      exit 1
+    fi
   fi
 
   if [ ! -f "$user_new_config_folder/$dc_file" ]; then
@@ -112,15 +117,18 @@ deploy() {
   
   if [ -f "$current_config" ]; then
     echo "> stopping services using current compose file"
-    sudo docker compose -f "$current_config" down
+    sudo docker compose -f "$current_config" --project-name $project_name down
 
     echo "> archiving the current deploy files"
     sudo tar czf $user_path/archive/deploy_${this_user}_${dt}.tar.gz -C $user_path/current/ .
-    sudo rm $user_path/current/*
+    sudo rm $current_config_folder/*
   fi
 
   echo "> making new compose files current"
-  sudo cp -r $user_new_config_root/. $user_path/current
+  if [ ! -d "$current_config_folder" ]; then
+    sudo mkdir -p $current_config_folder
+  fi
+  sudo cp -r $user_new_config_folder/. $current_config_folder/
 
 
   echo "> giving read access to new and archived files to $this_user"

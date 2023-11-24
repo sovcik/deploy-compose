@@ -94,6 +94,7 @@ if [ "$sys_user" = true ]; then
   echo "> giving user read-only access to deploy folders at $data_dir/users/$this_user"
   chown -R root:$this_user $data_dir/users/$this_user
   chmod -R o= $data_dir/users/$this_user
+  chmod -R g-w $data_dir/users/$this_user
 
 fi
 

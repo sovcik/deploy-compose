@@ -60,8 +60,8 @@ echo "Creating application for user: $user_name"
 echo "> creating application folder in deploy folder"
 mkdir -p $user_home/.deploy/$app_name
 
-mkdir -p $data_dir/users/$user_name/archive
-mkdir -p $data_dir/users/$user_name/current
+mkdir -p $data_dir/users/$user_name/archive/$app_name
+mkdir -p $data_dir/users/$user_name/current/$app_name
 
 echo "> giving read-only user access to deploy folders at $data_dir/users/$user_name"
 chown -R root:$user_name $data_dir/users/$user_name

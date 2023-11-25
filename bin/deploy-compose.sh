@@ -58,9 +58,9 @@ while [[ $# -gt 0 ]]; do
       shift
       shift
       ;;
-      
+
     *)
-      shift
+      break
       ;;
   esac
 done

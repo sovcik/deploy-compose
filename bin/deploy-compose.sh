@@ -15,6 +15,7 @@ show_help() {
   echo "Options:"
   echo "  --help, -h - show this help"
   echo "  --application, -a - application name, defualt: none"
+  echo "  --user, -u - user name, default: $this_user"
   echo
   echo "Commands:"
   echo "  connect <container_name> - connect to shell in the container"
@@ -30,20 +31,39 @@ show_help() {
   echo
 }
 
-if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
-  show_help
-  exit 0
-fi
+while [[ $# -gt 0 ]]; do
+  key="$1"
+  case $key in
+    --help|-h)
+      show_help
+      exit 0
+      ;;
 
-if [ "$1" == "--application" ] || [ "$1" == "-a" ]; then
-  if [ "$2" == "" ]; then
-    echo "Error: provide application name as the second argument"
-    exit 1
-  fi
-  app_name=$2
-  shift
-  shift
-fi
+    --user|-u)
+      if [ "$2" = "" ]; then
+        echo "Error: provide user name as the second argument"
+        exit 1
+      fi
+      this_user="$2"
+      shift
+      shift
+      ;;
+
+    --application|-a)
+      if [ "$2" = "" ]; then
+        echo "Error: provide application name as the second argument"
+        exit 1
+      fi
+      app_name="$2"
+      shift
+      shift
+      ;;
+      
+    *)
+      shift
+      ;;
+  esac
+done
 
 
 # path where deploy-compose is installed and where user folders are created
@@ -160,8 +180,6 @@ deploy() {
 ####################################################################################################
 connect() {
   if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
-    echo "Usage: $script_name $0 <container_name>"
-    echo
     echo Connects to shell in the container
     echo "  <container_name> - name of the container to connect to"
     exit 0
@@ -178,8 +196,6 @@ connect() {
 ####################################################################################################
 create() {
   if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
-    echo "Usage: $script_name $0"
-    echo
     echo Create docker containers used by project
     exit 0
   fi
@@ -192,7 +208,7 @@ create() {
 ####################################################################################################
 exec_cmd() {
   if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
-    echo "Usage: $script_name $0 <container_name> <command> [command args]"
+    echo "Usage: $script_name exec <container_name> <command> [command args]"
     echo
     echo Executes command in the container
     echo "  <container_name> - name of the container to connect to"
@@ -217,8 +233,6 @@ exec_cmd() {
 ####################################################################################################
 list() {
   if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
-    echo "Usage: $script_name $0"
-    echo
     echo List docker containers used by project
     exit 0
   fi
@@ -234,8 +248,6 @@ show_log(){
   fi
 
   if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
-    echo "Usage: $script_name $0 <container_name>"
-    echo
     echo Shows logs of the container
     echo "  <container_name> - name of the container to show logs for"
     exit 0
@@ -252,8 +264,6 @@ tail_log() {
   fi
 
   if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
-    echo "Usage: $script_name $0 <container_name>"
-    echo
     echo Tail logs of the container
     echo "  <container_name> - name of the container to show logs for"
     exit 0
@@ -265,8 +275,6 @@ tail_log() {
 ####################################################################################################
 pull() {
   if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
-    echo "Usage: $script_name $0"
-    echo
     echo Pull + refresh docker containers used by project
     exit 0
   fi
@@ -277,8 +285,6 @@ pull() {
 ####################################################################################################
 start() {
   if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
-    echo "Usage: $script_name $0"
-    echo
     echo Start docker containers used by project
     exit 0
   fi
@@ -289,8 +295,6 @@ start() {
 ####################################################################################################
 stop() {
   if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
-    echo "Usage: $script_name $0"
-    echo
     echo Stop docker containers used by project
     exit 0
   fi

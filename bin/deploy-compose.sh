@@ -156,7 +156,7 @@ deploy() {
 
   if [ -f "$current_config" ]; then
     echo "> stopping services using current compose file"
-    sudo docker compose --config $docker_config_file -f "$current_config" --project-name $project_name down
+    sudo docker --config $docker_config_file compose -f "$current_config" --project-name $project_name down
 
     echo "> archiving the current deploy files"
     sudo tar czf $user_path/archive/deploy_${project_name}_${dt}.tar.gz -C $current_config_folder/ .
@@ -173,12 +173,12 @@ deploy() {
   sudo chmod -R g-w $user_path
 
   echo "> pulling new images"
-  sudo docker compose --config $docker_config_file -f "$current_config" --project-name $project_name pull
+  sudo docker --config $docker_config_file compose -f "$current_config" --project-name $project_name pull
 
   echo "> starting services using new compose files"
   # navigate to current config folder, so docker compose can find .env file
   pushd $current_config_folder
-  sudo docker compose --config $docker_config_file -f "$dc_file" --project-name $project_name up -d
+  sudo docker --config $docker_config_file compose -f "$dc_file" --project-name $project_name up -d
   if [ $? -ne 0 ]; then
     echo "Error: failed to start services"
     popd
@@ -205,7 +205,7 @@ connect() {
     exit 1
   fi
 
-  sudo docker exec -i -t $1 /bin/bash
+  sudo docker --config $docker_config_file exec -i -t $1 /bin/bash
 }
 
 ####################################################################################################
@@ -216,7 +216,7 @@ create() {
   fi
 
   pushd $current_config_folder
-  sudo docker compose --config $docker_config_file -f "$dc_file" --project-name $project_name create
+  sudo docker --config $docker_config_file compose -f "$dc_file" --project-name $project_name create
   popd
 }
 
@@ -242,7 +242,7 @@ exec_cmd() {
     exit 1
   fi
 
-  sudo docker exec -i -t $@
+  sudo docker --config $docker_config_file exec -i -t $@
 }
 
 ####################################################################################################
@@ -252,7 +252,7 @@ list() {
     exit 0
   fi
 
-  sudo docker compose --config $docker_config_file -f "$current_config" --project-name $project_name ps
+  sudo docker --config $docker_config_file compose -f "$current_config" --project-name $project_name ps
 }
 
 ####################################################################################################
@@ -268,7 +268,7 @@ show_log(){
     exit 0
   fi
 
-  less -F `sudo docker inspect --format='{{.LogPath}}' $1`
+  less -F `sudo docker --config $docker_config_file inspect --format='{{.LogPath}}' $1`
 }
 
 ####################################################################################################
@@ -284,7 +284,7 @@ tail_log() {
     exit 0
   fi
 
-  tail -f `sudo docker inspect --format='{{.LogPath}}' $1`
+  tail -f `sudo docker --config $docker_config_file inspect --format='{{.LogPath}}' $1`
   }
 
 ####################################################################################################
@@ -294,7 +294,7 @@ pull() {
     exit 0
   fi
 
-  sudo docker compose --config $docker_config_file -f "$current_config" --project-name $project_name pull    
+  sudo docker --config $docker_config_file compose -f "$current_config" --project-name $project_name pull    
 }
 
 ####################################################################################################
@@ -304,7 +304,7 @@ start() {
     exit 0
   fi
 
-  sudo docker compose --config $docker_config_file -f "$current_config" --project-name $project_name start
+  sudo docker --config $docker_config_file compose -f "$current_config" --project-name $project_name start
 }
 
 ####################################################################################################
@@ -314,7 +314,7 @@ stop() {
     exit 0
   fi
 
-  sudo docker compose --config $docker_config_file -f "$current_config" --project-name $project_name stop
+  sudo docker --config $docker_config_file compose -f "$current_config" --project-name $project_name stop
 }
 
 ####################################################################################################

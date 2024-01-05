@@ -102,13 +102,13 @@ fi
 ####################################################################################################
 login() {
   if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
-    echo "Usage: $script_name login"
+    echo "Usage: $script_name login <username> <password>"
     echo
     echo Login to docker hub
     exit 0
   fi
 
-  sudo docker login
+  sudo docker login "$1" "$2"
 
 }
 

@@ -99,6 +99,8 @@ if [ "$app_name" != "" ]; then
   project_name="$this_user-$app_name"
 fi
 
+docker_config_file=$user_home_folder/.docker-$project_name.json
+
 ####################################################################################################
 login() {
   if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
@@ -108,7 +110,7 @@ login() {
     exit 0
   fi
 
-  sudo docker login -u "$1" -p "$2"
+  sudo docker --config $docker_config_file login -u "$1" -p "$2"
 
 }
 
@@ -154,7 +156,7 @@ deploy() {
 
   if [ -f "$current_config" ]; then
     echo "> stopping services using current compose file"
-    sudo docker compose -f "$current_config" --project-name $project_name down
+    sudo docker compose --config $docker_config_file -f "$current_config" --project-name $project_name down
 
     echo "> archiving the current deploy files"
     sudo tar czf $user_path/archive/deploy_${project_name}_${dt}.tar.gz -C $current_config_folder/ .
@@ -171,12 +173,12 @@ deploy() {
   sudo chmod -R g-w $user_path
 
   echo "> pulling new images"
-  sudo docker compose -f "$current_config" --project-name $project_name pull
+  sudo docker compose --config $docker_config_file -f "$current_config" --project-name $project_name pull
 
   echo "> starting services using new compose files"
   # navigate to current config folder, so docker compose can find .env file
   pushd $current_config_folder
-  sudo docker compose -f "$dc_file" --project-name $project_name up -d
+  sudo docker compose --config $docker_config_file -f "$dc_file" --project-name $project_name up -d
   if [ $? -ne 0 ]; then
     echo "Error: failed to start services"
     popd
@@ -214,7 +216,7 @@ create() {
   fi
 
   pushd $current_config_folder
-  sudo docker compose -f "$dc_file" --project-name $project_name create
+  sudo docker compose --config $docker_config_file -f "$dc_file" --project-name $project_name create
   popd
 }
 
@@ -250,7 +252,7 @@ list() {
     exit 0
   fi
 
-  sudo docker compose -f "$current_config" --project-name $project_name ps
+  sudo docker compose --config $docker_config_file -f "$current_config" --project-name $project_name ps
 }
 
 ####################################################################################################
@@ -292,7 +294,7 @@ pull() {
     exit 0
   fi
 
-  sudo docker compose -f "$current_config" --project-name $project_name pull    
+  sudo docker compose --config $docker_config_file -f "$current_config" --project-name $project_name pull    
 }
 
 ####################################################################################################
@@ -302,7 +304,7 @@ start() {
     exit 0
   fi
 
-  sudo docker compose -f "$current_config" --project-name $project_name start
+  sudo docker compose --config $docker_config_file -f "$current_config" --project-name $project_name start
 }
 
 ####################################################################################################
@@ -312,7 +314,7 @@ stop() {
     exit 0
   fi
 
-  sudo docker compose -f "$current_config" --project-name $project_name stop
+  sudo docker compose --config $docker_config_file -f "$current_config" --project-name $project_name stop
 }
 
 ####################################################################################################

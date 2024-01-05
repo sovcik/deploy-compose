@@ -108,7 +108,7 @@ login() {
     exit 0
   fi
 
-  sudo docker login "$1" "$2"
+  sudo docker login -u "$1" -p "$2"
 
 }
 

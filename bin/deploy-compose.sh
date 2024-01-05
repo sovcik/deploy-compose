@@ -100,6 +100,19 @@ if [ "$app_name" != "" ]; then
 fi
 
 ####################################################################################################
+login() {
+  if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+    echo "Usage: $script_name login"
+    echo
+    echo Login to docker hub
+    exit 0
+  fi
+
+  sudo docker login
+
+}
+
+####################################################################################################
 deploy() {
 
   if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
@@ -308,6 +321,8 @@ command=$1
 shift
 
 case $command in 
+  login ) 
+    login "$@";;
 	connect ) 
     connect "$@";;
   create ) 
